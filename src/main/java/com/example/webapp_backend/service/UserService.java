@@ -55,7 +55,12 @@ public class UserService implements UserDetailsService {
         }
 
         if (!isPasswordStrong(registrationRequest.getPassword())) {
-            throw new IllegalArgumentException("Password does not meet the security requirements.");
+            throw new CustomException("Your password must meet the following security requirements:\n" +
+                    "- At least 8 characters long\n" +
+                    "- Contains at least one uppercase letter (A-Z)\n" +
+                    "- Contains at least one lowercase letter (a-z)\n" +
+                    "- Contains at least one digit (0-9)\n" +
+                    "- Contains at least one special character from the set @$!%*?&\n");
         }
 
         UserEntity newUser = new UserEntity();
