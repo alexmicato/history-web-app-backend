@@ -16,7 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +28,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ReferenceRepository referenceRepository;
     private final UserRepository userRepository;
+    private final Random random = new Random();
 
 
     public ArticleService(ArticleRepository articleRepository, ReferenceRepository referenceRepository, UserRepository userRepository) {
@@ -166,5 +170,30 @@ public class ArticleService {
                 article.getTags(),
                 article.getReferences().stream().map(ref -> new ReferenceDTO(ref.getId(), ref.getReferenceText(), ref.getUrl())).collect(Collectors.toList())
         ));
+    }
+
+    public List<ArticleDTO> findTop3RecentArticles() {
+        List<ArticleEntity> articles = articleRepository.findTop3ByOrderByCreatedAtDesc();
+        return articles.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<ArticleDTO> getEventArticleByDate(LocalDate eventDate) {
+        List<ArticleEntity> articles = articleRepository.findByEventDate(eventDate);
+        if (articles.isEmpty()) {
+            return Optional.empty();
+        }
+        ArticleEntity article = articles.get(random.nextInt(articles.size())); // Select a random event
+        return Optional.of(convertToDTO(article));
+    }
+
+    private ArticleDTO convertToDTO(ArticleEntity article) {
+        List<ReferenceDTO> references = article.getReferences().stream()
+                .map(ref -> new ReferenceDTO(ref.getId(), ref.getReferenceText(), ref.getUrl()))
+                .collect(Collectors.toList());
+        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getSummary(),
+                article.getType().toString(), article.getEventDate(), article.getReadingTime(),
+                article.getTags(), references);
     }
 }

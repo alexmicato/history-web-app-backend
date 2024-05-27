@@ -14,11 +14,14 @@ import com.example.webapp_backend.service.ArticleService;
 import com.example.webapp_backend.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -151,6 +154,17 @@ public class ArticleController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to update article: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/articles/event-of-the-day")
+    public Optional<ArticleDTO> getEventArticleByDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return articleService.getEventArticleByDate(date);
+    }
+
+    @GetMapping("/articles/recent")
+    public List<ArticleDTO> getTop3RecentArticles() {
+        return articleService.findTop3RecentArticles();
     }
 
 }
