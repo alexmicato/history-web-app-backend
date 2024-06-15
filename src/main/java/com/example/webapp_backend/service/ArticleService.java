@@ -180,11 +180,15 @@ public class ArticleService {
     }
 
     public Optional<ArticleDTO> getEventArticleByDate(LocalDate eventDate) {
-        List<ArticleEntity> articles = articleRepository.findByEventDate(eventDate);
+        int month = eventDate.getMonthValue();
+        int day = eventDate.getDayOfMonth();
+        List<ArticleEntity> articles = articleRepository.findByMonthAndDay(month, day);
         if (articles.isEmpty()) {
+            System.out.println("No articles found for the date: " + month + " " + day);
             return Optional.empty();
         }
-        ArticleEntity article = articles.get(random.nextInt(articles.size())); // Select a random event
+        ArticleEntity article = articles.get(0);
+
         return Optional.of(convertToDTO(article));
     }
 

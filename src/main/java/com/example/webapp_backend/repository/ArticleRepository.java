@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -23,4 +24,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Long>{
 
     @Query("SELECT a FROM ArticleEntity a ORDER BY a.createdAt DESC")
     List<ArticleEntity> findTop3ByOrderByCreatedAtDesc();
+
+    @Query(value = "SELECT * FROM article WHERE EXTRACT(MONTH FROM event_date) = :month AND EXTRACT(DAY FROM event_date) = :day", nativeQuery = true)
+    List<ArticleEntity> findByMonthAndDay(@Param("month") int month, @Param("day") int day);
 }

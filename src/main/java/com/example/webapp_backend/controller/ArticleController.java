@@ -18,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -156,10 +157,14 @@ public class ArticleController {
         }
     }
 
-    @GetMapping("/articles/event-of-the-day")
-    public Optional<ArticleDTO> getEventArticleByDate(
+    @GetMapping("/articles/eventOfTheDay")
+    public ResponseEntity<ArticleDTO> getEventArticleByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return articleService.getEventArticleByDate(date);
+
+        ArticleDTO articleDTO = articleService.getEventArticleByDate(date)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found"));
+
+        return ResponseEntity.ok(articleDTO);
     }
 
     @GetMapping("/articles/recent")
