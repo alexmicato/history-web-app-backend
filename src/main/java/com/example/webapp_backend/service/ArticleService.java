@@ -187,7 +187,8 @@ public class ArticleService {
             System.out.println("No articles found for the date: " + month + " " + day);
             return Optional.empty();
         }
-        ArticleEntity article = articles.get(0);
+        Random random = new Random();
+        ArticleEntity article = articles.get(random.nextInt(articles.size()));
 
         return Optional.of(convertToDTO(article));
     }
