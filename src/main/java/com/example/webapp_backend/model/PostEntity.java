@@ -43,7 +43,7 @@ public class PostEntity {
     @JoinColumn(name = "category_id", nullable = true)
     private PostCategoryEntity category;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<LikeEntity> likes = new HashSet<>();
 
