@@ -74,7 +74,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
-    private boolean isPasswordStrong(String password) {
+    public boolean isPasswordStrong(String password) {
         String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         Pattern pattern = Pattern.compile(passwordPattern);
         return pattern.matcher(password).matches();

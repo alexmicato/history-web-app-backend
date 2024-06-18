@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class JwtTokenUtil {
 
-    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(60);
+    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(1440);
     private final Algorithm hmac512;
     private final JWTVerifier verifier;
 
