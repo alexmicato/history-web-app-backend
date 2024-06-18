@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long>
 {
-    @Query("SELECT new com.example.webapp_backend.model.dto.PostDTO(p.id, u.username, p.title, p.content, p.createdAt, count(c.id), COALESCE(p.category.name, 'Uncategorized'), count(l.id)) " +
+    @Query("SELECT new com.example.webapp_backend.model.dto.PostDTO(p.id, u.username, p.title, p.content, p.createdAt, COUNT(DISTINCT c.id), COALESCE(pc.name, 'Uncategorized'), COUNT(DISTINCT l.id)) " +
             "FROM PostEntity p " +
             "JOIN p.user u " +
             "LEFT JOIN p.comments c " +

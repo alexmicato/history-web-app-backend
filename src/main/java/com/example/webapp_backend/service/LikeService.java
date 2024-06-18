@@ -39,7 +39,8 @@ public class LikeService {
         LikeEntity like = likeRepository.findByPostIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Like not found"));
         System.out.println("Like found with ID: " + like.getId() + ", attempting to delete...");
-        likeRepository.deleteByPostIdAndUserId(postId, user.getId());
+        //likeRepository.deleteByPostIdAndUserId(postId, user.getId());
+        likeRepository.delete(like);
         System.out.println("Like with ID: " + like.getId() + " deleted successfully.");
     }
 

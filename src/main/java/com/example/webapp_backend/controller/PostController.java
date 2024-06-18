@@ -68,7 +68,9 @@ public class PostController {
             }
 
             PostEntity newPost = postService.createPost(post);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
+
+            PostDTO responseDTO = DTOutils.convertToPostDTO(newPost);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
         } catch (Exception e) {
             logger.error("Failed to create post: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Failed to create post: " + e.getMessage());

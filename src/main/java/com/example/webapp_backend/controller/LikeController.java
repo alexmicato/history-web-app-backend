@@ -44,7 +44,6 @@ public class LikeController {
     public ResponseEntity<?> unlikePost(@PathVariable Long postId, Authentication authentication) {
         String username = authentication.getName();
         UserEntity user = userService.findByUsername(username);
-        System.out.println("Attempting to unlike post: " + postId + " by user: " + username);
         try {
             likeService.unlikePost(postId, user);
             return ResponseEntity.ok().build();

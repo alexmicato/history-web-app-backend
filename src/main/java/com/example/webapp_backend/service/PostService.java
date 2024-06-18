@@ -53,8 +53,11 @@ public class PostService {
     @Transactional
     public void deletePost(Long id) {
         PostEntity post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
-        post.getLikes().forEach(like -> likeRepository.deleteByPostIdAndUserId(id, like.getUser().getId()));
-        commentRepository.deleteAll(post.getComments());
+
+        //post.getLikes().forEach(like -> like.getUser().getLikedPosts().remove(like));
+        //post.getLikes().clear();
+        //post.getComments().clear();
+
         postRepository.delete(post);
     }
 

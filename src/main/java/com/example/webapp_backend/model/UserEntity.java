@@ -41,13 +41,13 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roleEntities = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    /*@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<LikeEntity> likedPosts = new HashSet<>();
+    private Set<LikeEntity> likedPosts = new HashSet<>();*/
 
     @Column(name = "profile_image_url", nullable = true)
     private String profileImageUrl;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ArticleEntity> articles = new ArrayList<>();
+    /*@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ArticleEntity> articles = new ArrayList<>();*/
 }
