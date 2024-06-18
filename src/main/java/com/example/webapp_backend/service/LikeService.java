@@ -4,6 +4,7 @@ package com.example.webapp_backend.service;
 import com.example.webapp_backend.model.LikeEntity;
 import com.example.webapp_backend.model.PostEntity;
 import com.example.webapp_backend.model.UserEntity;
+import com.example.webapp_backend.model.dto.LikeDTO;
 import com.example.webapp_backend.repository.LikeRepository;
 import com.example.webapp_backend.repository.PostRepository;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class LikeService {
         this.postRepository = postRepository;
     }
 
-    public LikeEntity likePost(Long postId, UserEntity user) {
+    public LikeDTO likePost(Long postId, UserEntity user) {
         if (likeRepository.existsByPostIdAndUserId(postId, user.getId())) {
             throw new IllegalArgumentException("User already liked this post");
         }
@@ -29,7 +30,8 @@ public class LikeService {
         LikeEntity like = new LikeEntity();
         like.setUser(user);
         like.setPost(post);
-        return likeRepository.save(like);
+        LikeEntity savedLike = likeRepository.save(like);
+        return new LikeDTO(savedLike.getId(), user.getId(), post.getId());
     }
 
     public void unlikePost(Long postId, UserEntity user) {
